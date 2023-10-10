@@ -1,0 +1,9 @@
+@react-navigation/native-stack
+@react-navigation/native
+react-native-maps
+expo-location
+@react-navigation/native-stack
+@react-navigation/native-stack
+react-native-screens
+
+npx expo install react-native-safe-area-context
