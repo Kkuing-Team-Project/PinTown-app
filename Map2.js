@@ -7,7 +7,6 @@ import * as SQLite from "expo-sqlite";
 const MapScreen = () => {
     const [location, setLocation] = useState(null);
     const [locationName, setLocationName] = useState(null);
-    const [isOnline, setIsOnline] = useState(true);
     const mapRef = useRef(null);
 
     const db = SQLite.openDatabase("locations.db");
@@ -29,7 +28,7 @@ const MapScreen = () => {
                         if (_array.length > 0) {
                             const lastLocation = _array[_array.length - 1];
                             setLocation(lastLocation);
-                            setLocationName(lastLocation.neighborhood || "동네 정보 없음");
+                            setLocationName(lastLocation.district || "동네 정보 없음");
                         }
                     }
                 );
@@ -46,14 +45,14 @@ const MapScreen = () => {
 
                 if (locationInfo && locationInfo.length > 0) {
                     const firstLocation = locationInfo[0];
-                    const neighborhood = firstLocation.subregion || "동네 정보 없음";
-                    setLocationName(neighborhood);
+                    const district = firstLocation.district || "동네 정보 없음";
+                    setLocationName(district);
 
                     // 로컬 DB에 위치 정보 저장
                     db.transaction((tx) => {
                         tx.executeSql(
-                            "INSERT INTO locations (latitude, longitude, neighborhood) VALUES (?, ?, ?)",
-                            [location.coords.latitude, location.coords.longitude, neighborhood]
+                            "INSERT INTO locations (latitude, longitude, district) VALUES (?, ?, ?)",
+                            [location.coords.latitude, location.coords.longitude, district]
                         );
                     });
                 } else {
