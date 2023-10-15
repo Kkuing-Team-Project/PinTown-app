@@ -1,13 +1,14 @@
-// Map.js
+// Map.js google mpa 로드 기능
 
-import React, { useState, useEffect, useRef} from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity, Button } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from "react-native-maps";
 import * as Location from "expo-location";
 
-const MapScreen = ({navigation}) => {
+const MapScreen = () => {
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [locationName, setLocationName] = useState(null);
+  const [errorMsg] = useState(null);
   const mapRef = useRef(null);
 
   useEffect(() => {
@@ -20,22 +21,36 @@ const MapScreen = ({navigation}) => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+
+      if (location) {
+        const { latitude, longitude } = location.coords;
+
+        // Google Geocoding API를 사용하여 역 이름 가져오기
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyA7tr2yLcJ22AETMq5CovtLZ5RNjyajoM4`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.results && data.results[0] && data.results[0].formatted_address) {
+            const stationName = data.results[0].formatted_address;
+            setLocationName(stationName);
+          } else {
+            setLocationName("역 이름을 찾을 수 없음");
+          }
+        } else {
+          setLocationName("역 이름을 찾을 수 없음");
+        }
+      }
     })();
   }, []);
 
-  // GPS 버튼을 눌렀을 때 현재 위치로 이동
   const handleGPSButtonClick = () => {
     if (location) {
       moveCamera(location.coords.latitude, location.coords.longitude);
     }
   };
-  // Login 버튼을 눌렀을 때 Login 페이지로 이동 
-  const handleLoginButtonClick = () => {
-    console.log('Login 페이지 이동'); // 터미널에 출력
-    navigation.navigate('Login');
-  };
 
-  // 카메라를 이동시킬 함수
   const moveCamera = (latitude, longitude) => {
     if (mapRef.current) {
       mapRef.current.animateToRegion({
@@ -66,11 +81,11 @@ const MapScreen = ({navigation}) => {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
-            radius={50} // Circle의 반지름을 작은 값으로 설정
+            radius={50}
             fillColor="rgba(0, 128, 255, 0.3)"
             strokeColor="rgba(0, 128, 255, 0.5)"
           />
-
+  
           <Marker
             coordinate={{
               latitude: location.coords.latitude,
@@ -86,21 +101,17 @@ const MapScreen = ({navigation}) => {
       ) : (
         <Text>Loading...</Text>
       )}
-
-      {/* GPS 버튼 */}
+  
+      {/* 추가: 현재 위치 표시 */}
+      <Text style={styles.currentLocationText}>
+        {locationName ? `${locationName}` : "로딩 중..."}
+      </Text>
+  
       <TouchableOpacity
         style={styles.gpsButton}
         onPress={handleGPSButtonClick}
       >
         <Text style={styles.gpsButtonText}>GPS</Text>
-      </TouchableOpacity>
-
-     {/* Login 버튼 */}
-     <TouchableOpacity
-        style={styles.loginButton}
-        onPress={handleLoginButtonClick}
-      >
-        <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -120,18 +131,26 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  loginButton: {
+  locationText: {
     position: "absolute",
-    bottom: 16,
-    right: 80,
-    backgroundColor: "red",
+    top: 16,
+    left: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     padding: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    zIndex: 2,
   },
-  loginButtonText: {
-    color: "white",
-    fontWeight: "bold",
+
+  currentLocationText: {
+    position: "absolute",
+    top: 50,
+    left: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 2,
   },
 });
+
 
 export default MapScreen;

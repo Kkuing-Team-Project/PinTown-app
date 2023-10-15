@@ -2,6 +2,8 @@
   "expo": {
     "name": "PinTown-C-app",
     "slug": "PinTown-C-app",
+    "privacy": "public",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,6 +13,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -19,6 +24,9 @@
       "bundleIdentifier": "com.yeopseung.PinTown-C-app",
       "config": {
         "googleMapsApiKey": "AIzaSyA7tr2yLcJ22AETMq5CovtLZ5RNjyajoM4"
+      },
+      "infoPlist": {
+        "UIBackgroundModes": ["location"]
       }
     },
     

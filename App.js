@@ -1,39 +1,35 @@
 // App.js
-import React from "react";
-import { View, Button } from 'react-native';
+import React, { useState } from "react";
+import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import MapScreen from "./Map";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import MapScreen from "./Map2";
 import LoginScreen from "./Login";
 import SignUpScreen from "./SingUp";
 
-//const Stack = createStackNavigator();
-const Stack = createNativeStackNavigator();
-
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="PinTown">
-
-        <Stack.Screen 
-            name="PinTown" 
-            component={MapScreen} 
-            options={{ title: 'PinTown' }}
+      <Tab.Navigator>
+        <Tab.Screen 
+          name="PinTown"
+          options={{ headerShown: false }}
+        >
+          {() => <MapScreen />}
+        </Tab.Screen>
+        <Tab.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{ title: '로그인 페이지' }}
         />
-        
-        <Stack.Screen 
-           name="Login" 
-           component={LoginScreen} 
-           options={{ title: '로그인 페이지' }}
+        <Tab.Screen 
+          name="SignUp" 
+          component={SignUpScreen} 
         />
-
-        <Stack.Screen 
-           name="SignUp" 
-           component={SignUpScreen} 
-           options={{ title: '회원가입 페이지' }}
-        />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }
+

@@ -5,5 +5,6 @@ expo-location
 @react-navigation/native-stack
 @react-navigation/native-stack
 react-native-screens
-
+@react-native-community/netinfo
+expo-sqlite
 npx expo install react-native-safe-area-context
