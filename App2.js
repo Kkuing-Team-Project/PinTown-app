@@ -19,8 +19,7 @@ function HomeTabs() {
       >
         {() => <MapScreen />}
       </Tab.Screen>
-
-    <Tab.Screen
+      <Tab.Screen
         name="Login"
         options={{ headerShown: false }}
       >
@@ -35,8 +34,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignupScreen} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Home" component={MapScreen} options={{ headerShown: false }} /> */}
+        {/* <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} /> */}
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignupScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

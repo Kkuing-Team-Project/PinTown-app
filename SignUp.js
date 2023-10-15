@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
-const SignupScreen = ({ navigation }) => {
+const SignupScreen = () => {
+  const navigation = useNavigation(); // Get the navigation object
+
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [email, setEmail] = React.useState('');
 
   const handleSignup = () => {
-    // 회원가입 로직을 구현하세요.
-    // 여기에서 username, password, email 등을 사용하여 회원가입을 처리할 수 있습니다.
-
-    navigation.navigate('Login');
+    navigation.navigate('Profile');
   };
 
   return (

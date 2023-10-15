@@ -2,15 +2,18 @@
 
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-// import userData from './userData.json'; // JSON 파일에서 사용자 데이터 불러오기
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
-const LoginScreen = ({ navigation }) => {
+
+const LoginScreen = () => {
+  const navigation = useNavigation(); // Get the navigation object
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
   const handleLoginButtonPress = () => {
     // 로그인 로직을 구현하세요.
     // 여기에서 username과 password를 사용하여 로그인을 시도할 수 있습니다.
+    navigation.navigate('Home');
   };
 
   const handleSignUpButtonPress = () => {
