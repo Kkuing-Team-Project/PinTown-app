@@ -8,12 +8,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MapScreen from "./Map2";
-import LoginScreen from "./Login";
-import SignupScreen from "./SignUp";
+//mport LoginScreen from "./Login";
+//import SignupScreen from "./SignUp";
 import ProfileScreen from "./profile";
 import Tutorial from "./tutorial";
 import Location from "./location";
-
+import CertifiedScreen from './Certified';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -53,8 +53,9 @@ export default function App() {
         }}
       />
         <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignupScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
