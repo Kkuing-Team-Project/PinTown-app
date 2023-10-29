@@ -11,14 +11,12 @@ const CertifiedScreen = () => {
   const [password, setPassword] = React.useState('');
 
   const handleLoginButtonPress = () => {
-    // 로그인 로직을 구현하세요.
-    // 여기에서 username과 password를 사용하여 로그인을 시도할 수 있습니다.
-    navigation.navigate('Home');
+    navigation.navigate('Location');
   };
 
   const handleSignUpButtonPress = () => {
     //회원가입 화면으로 이동
-    navigation.navigate('SignUp');
+    //navigation.navigate('SignUp');
   };
 
   return (

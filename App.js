@@ -34,7 +34,7 @@ function HomeTabs() {
       </Tab.Screen>
 
     <Tab.Screen
-        name="Login"
+        name="Profile"
         options={{ headerShown: false }}
       >
         {() => <LoginScreen />}
@@ -48,15 +48,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Tutorial" component={Tutorial} options={{
-          headerShown: false,
-        }}
-      />
-        <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
-
-        <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Tutorial" component={Tutorial} options={{headerShown: false}}/>
+        <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />        
         <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
