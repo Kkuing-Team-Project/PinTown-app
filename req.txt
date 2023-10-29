@@ -6,5 +6,15 @@ expo-location
 @react-navigation/native-stack
 react-native-screens
 @react-native-community/netinfo
+@react-native-community/geolocation
 expo-sqlite
+react-native-sqlite-storage
+@react-native-picker/picker
+react-native-image-picker
+
+
+npx expo install react-native-image-picker
+npx expo install @react-native-picker/picker
+npx expo install react-native-image-resizer
+npx expo install react-native-permissions
 npx expo install react-native-safe-area-context

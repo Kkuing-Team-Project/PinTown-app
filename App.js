@@ -1,11 +1,19 @@
-import React from "react";
-import { NavigationContainer} from "@react-navigation/native";
+// App.js
+
+import React from 'react';
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import MapScreen from "./Map2";
 import LoginScreen from "./Login";
 import SignupScreen from "./SignUp";
 import ProfileScreen from "./profile";
+import Tutorial from "./tutorial";
+import Location from "./location";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -15,7 +23,12 @@ function HomeTabs() {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        options={{ headerShown: false }}
+        options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
       >
         {() => <MapScreen />}
       </Tab.Screen>
@@ -31,9 +44,15 @@ function HomeTabs() {
 }
 
 export default function App() {
+  StatusBar.setBarStyle('dark-content');
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Tutorial" component={Tutorial} options={{
+          headerShown: false,
+        }}
+      />
+        <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignupScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
@@ -41,3 +60,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+//<Stack.Screen name="Location" component={Location} options={{ headerTitle: '' }} />

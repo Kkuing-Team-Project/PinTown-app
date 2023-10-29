@@ -66,6 +66,7 @@ const MapScreen = () => {
     }, []);
 
     const handleGPSButtonClick = () => {
+        refreshLocation()
         if (location) {
             moveCamera(location.coords.latitude, location.coords.longitude);
         }
@@ -84,6 +85,7 @@ const MapScreen = () => {
 
     const refreshLocation = async () => {
         try {
+            console.log("restart");
             const location = await Location.getCurrentPositionAsync({});
             setLocation(location);
 
@@ -162,13 +164,6 @@ const MapScreen = () => {
                 onPress={handleGPSButtonClick}
             >
                 <Text style={styles.gpsButtonText}>GPS</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                style={styles.refreshButton}
-                onPress={refreshLocation}
-            >
-                <Text style={styles.refreshButtonText}>새로고침</Text>
             </TouchableOpacity>
         </View>
     );
