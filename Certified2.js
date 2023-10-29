@@ -1,4 +1,4 @@
-// Certified.js
+// Certified2.js
 
 import React, { useState, } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
@@ -12,7 +12,7 @@ const CertifiedScreen = () => {
   const [clik, setClik] = useState(true)
 
   const leftButtton = () => {
-    navigation.navigate('Location');
+    navigation.navigate('Tutorial');
     console.log('ok');
   };
 
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         padding:15,
         marginBottom: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         fontSize: 20,
     },
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: '90%',
         height: '7%',
-        borderRadius: 5,
+        borderRadius: 10,
     },
     
     signupButtonText: {
@@ -165,7 +165,7 @@ const styles2 = StyleSheet.create({
         borderColor: 'gray',
         padding:15,
         marginBottom: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         fontSize: 20,
     },
 
@@ -179,7 +179,7 @@ const styles2 = StyleSheet.create({
         borderColor: 'gray',
         padding:15,
         marginBottom: 10,
-        borderRadius: 5,
+        borderRadius: 10,
         fontSize: 20,
     },
 
@@ -192,7 +192,7 @@ const styles2 = StyleSheet.create({
         padding: 10,
         width: '90%',
         height: '7%',
-        borderRadius: 5,
+        borderRadius: 10,
     },
 
     signupButton2: {
@@ -204,7 +204,7 @@ const styles2 = StyleSheet.create({
         padding: 10,
         width: '90%',
         height: '7%',
-        borderRadius: 5,
+        borderRadius: 10,
     },
     
     signupButtonText: {

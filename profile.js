@@ -1,171 +1,204 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, PermissionsAndroid, Platform, TextInput, StyleSheet } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
-import { CameraRoll } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TouchableOpacity, Image, TextInput, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import { IconButton, MD3Colors } from 'react-native-paper';
+import * as ImagePicker from 'expo-image-picker';
+import FormData from 'form-data'
+import axios from 'axios';
 
 const ProfileScreen = () => {
   const navigation = useNavigation(); // Get the navigation object
-  const [imageUri, setImageUri] = useState(null);
-  const [nickname, setNickname] = useState('');
-  const [features, setFeatures] = useState('');
-  const [gender, setGender] = useState(null);
-  const [age, setAge] = useState(null);
+  const [username, setUsername] = React.useState('');
 
-  const requestCameraPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Camera Permission',
-            message: 'App needs access to your camera to take pictures.',
-          }
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          openImagePicker();
-        } else {
-          console.warn('Camera permission denied');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    } else {
-      openImagePicker();
-    }
-  };
+  const [imageUrl, setImageUrl] = useState('');
+  // 권한 요청을 위한 hooks
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
-  const handleSaveProfile = () => {
+  const leftButtton = () => {
     //Home으로 이동
-    navigation.navigate('Home');
+    navigation.navigate('Number');
   };
 
-  const openImagePicker = () => {
-    ImagePicker.showImagePicker({ title: 'Select Profile Picture' }, response => {
-      if (response.uri) {
-        setImageUri(response.uri);
-        // 이미지를 저장
-        saveImage(response.uri);
+  const uploadImage = async () => {
+    // 권한 확인 코드: 권한 없으면 물어보고, 승인하지 않으면 함수 종료
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        return null;
       }
-    });
-  };
-
-  const saveImage = async (imageUri) => {
-    try {
-      await CameraRoll.saveToCameraRoll(imageUri, 'photo');
-      console.log('Image saved to camera roll');
-    } catch (error) {
-      console.error('Failed to save image: ', error);
     }
+  
+    // 이미지 업로드 기능
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1]
+    });
+    if (result.cancelled) {
+      return null; // 이미지 업로드 취소한 경우
+    }
+  
+    // 이미지 업로드 결과 및 이미지 경로 업데이트
+    console.log(result);
+    setImageUrl(result.uri);
+  
+    // 서버에 요청 보내기
+    const localUri = result.uri;
+    const filename = localUri.split('/').pop();
+    const match = /\.(\w+)$/.exec(filename ?? '');
+    const type = match ? `image/${match[1]}` : `image`;
+    const formData = new FormData();
+    formData.append('image', { uri: localUri, name: filename, type });
+  
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://192.168.0.89:8081/', // Correct URL
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+        data: formData,
+      });
+    
+      // Handle a successful response (e.g., check the status code and response data)
+      if (response.status === 200) {
+        console.log('Request was successful');
+        console.log('Response data:', response.data);
+        // You can update your UI or perform further actions based on the response.
+      } else {
+        console.error('Request was not successful. Status code:', response.status);
+        // Handle the error (e.g., show an error message to the user)
+      }
+    } catch (error) {
+      console.error('Axios request error:', error);
+      // Handle the error (e.g., show an error message to the user)
+    }    
+  };
+  
+  const ClikButton = () => {
+    navigation.navigate('Main');
   };
 
   return (
     <View style={styles.container}>
-      {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.image} />
-      ) : (
-        <TouchableOpacity onPress={requestCameraPermission} style={styles.uploadButton}>
-          <Text>Upload Profile Picture</Text>
+       <View style={styles.header}>
+          <IconButton icon="arrow-left" iconColor={MD3Colors.error50} size={20} onPress={leftButtton}/>
+        </View>
+        <View style={styles.circularShape}>
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <IconButton icon='camera' iconColor={MD3Colors.error50} size={60} onPress={uploadImage} />
+          )}
+        </View>
+
+         
+        <Text style={styles.title_txt}>닉네임</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="닉네임을 입력해주세요."
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+        />
+    
+        <TouchableOpacity style={styles.signupButton} onPress={ClikButton}>
+          <Text style={styles.signupButtonText}>시작하기</Text>
         </TouchableOpacity>
-      )}
-
-      <TextInput
-        style={styles.input}
-        placeholder="닉네임"
-        value={nickname}
-        onChangeText={(text) => setNickname(text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="특징"
-        value={features}
-        onChangeText={(text) => setFeatures(text)}
-      />
-
-      <Text style={styles.text}>성별 선택</Text>
-      <Picker
-        style={styles.picker}
-        selectedValue={gender}
-        onValueChange={(itemValue) => setGender(itemValue)}>
-        <Picker.Item label="여성" value="여성" />
-        <Picker.Item label="남성" value="남성" />
-        <Picker.Item label="비공개" value="비공개" />
-      </Picker>
-
-      <Text style={styles.text}>나이 선택</Text>
-      <Picker
-        style={styles.picker2}
-        selectedValue={age}
-        onValueChange={(itemValue) => setAge(itemValue)}>
-        <Picker.Item label="10대" value="10대" />
-        <Picker.Item label="20대" value="20대" />
-        <Picker.Item label="30대" value="30대" />
-      </Picker>
-
-      {/* 다른 프로필 정보 입력 필드 및 저장 버튼 추가 */}
-
-      {/* 프로필 저장 버튼 */}
-      <TouchableOpacity
-        style={styles.saveButton}
-        onPress={handleSaveProfile}
-      >
-        <Text style={styles.saveButtonText}>프로필 저장</Text>
-      </TouchableOpacity>
-
     </View>
   );
 };
 
+
+const imageWidth = 290; // 이미지 너비
+const imageHeight = 290; // 이미지 높이
+const borderRadius = Math.min(imageWidth, imageHeight) / 2;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  text: {
-    color: 'black',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-  },
-  image: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
-  },
-  uploadButton: {
-    alignSelf: 'center',
-    padding: 10,
-  },
-  input: {
-    width: '80%',
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
-  },
-  picker: {
-    height: 0,
-    marginBottom:50,
-    
-  },
-  picker2: {
-    height: 20,
-    marginBottom: 200,
-  },
-  saveButton: {
-    backgroundColor: 'blue',
-    padding: 10,
-    borderRadius: 10,
-  },
-  saveButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    alignSelf: 'center',
+    backgroundColor: '#FFFFFF', // 배경색 설정
   },
 
+  image: {
+    width: imageWidth, // 이미지 너비 조절
+    height: imageHeight, // 이미지 높이 조절
+    borderRadius: borderRadius, // 이미지를 원 모양으로 만듭니다. (원의 반지름은 너비와 높이의 절반)
+  },
+
+  title_txt:{
+      //justifyContent: 'center',
+      top:-90,
+      color: 'black',
+      fontSize: 25,
+      padding: 30,
+  },
+
+  input: {
+      alignSelf: 'center', // 가로 중앙으로 배치
+      justifyContent: 'center', // 세로 중앙으로 배치
+      width: '90%',
+      height: '7%',
+      top:-100,
+      borderWidth: 1,
+      borderColor: 'gray',
+      padding:15,
+      marginBottom: 10,
+      borderRadius: 10,
+      fontSize: 20,
+  },
+
+  signupButton: {
+      alignSelf: 'center', // 가로 중앙으로 배치
+      justifyContent: 'center', // 세로 중앙으로 배치
+      marginTop: 10,
+      top:-80,
+      backgroundColor:  '#60D937',
+      padding: 10,
+      width: '90%',
+      height: '7%',
+      borderRadius: 10,
+  },
+  
+  signupButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    textAlign:'center',
+    fontSize:20,
+  },
+
+  header: {
+      height:170,
+      justifyContent: 'center',
+      verticalAlign:'auto',
+      padding:20,
+  },
+
+  Top:{
+    top:-40,
+    alignSelf: 'center', // 가로 중앙으로 배치
+    justifyContent: 'center', // 세로 중앙으로 배치
+    width: 300,  // Adjust the width and height as needed
+    height: 300, // These should be equal to make it a circle
+    borderRadius: 150, // Half of the width/height to create a circle
+    backgroundColor: '#FFFFFF', // Add your desired background color
+    alignItems: 'center',
+
+  },
+
+  circularShape: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    //position:'absolute',
+    top:-70,
+    width: 300,  // Adjust the size as needed
+    height: 300, // These should be equal to make it a circle
+    borderRadius: 150, // Half of the width/height to create a circle
+    borderWidth: 5, // You can add a border width
+    borderColor: '#60D937', // Border color
+    backgroundColor: 'transparent', // Background color
+  },
 });
 
 export default ProfileScreen;

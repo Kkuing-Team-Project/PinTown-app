@@ -15,7 +15,7 @@ const Tutorial = () => {
   };
 
   const loginButton = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('Number2');
   };
 
   return (

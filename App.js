@@ -14,6 +14,7 @@ import ProfileScreen from "./profile";
 import Tutorial from "./tutorial";
 import Location from "./location";
 import CertifiedScreen from './Certified';
+import CertifiedScreen2 from './Certified2';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,7 +38,7 @@ function HomeTabs() {
         name="Profile"
         options={{ headerShown: false }}
       >
-        {() => <LoginScreen />}
+        {() => <ProfileScreen />}
       </Tab.Screen>
     </Tab.Navigator>
   );
@@ -49,8 +50,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Tutorial" component={Tutorial} options={{headerShown: false}}/>
-        <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />        
-        <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Number2" component={CertifiedScreen2} options={{ headerShown: false }} /> 
+        <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
+        <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />        
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
       </Stack.Navigator>
