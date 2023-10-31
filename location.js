@@ -23,12 +23,14 @@ const LocationScreen = () => {
 
   const Certified = () => {
     // 아이폰 위치 권한 설정
+    
     setShowScrollView(false); // ScrollView를 숨김
     setSty(false);
   };
 
   const No_Certified = () => {
     // 아이폰 위치 권한 미설정
+    console.log('아이폰 위치 권한 미 설정')
     setShowScrollView(false); // ScrollView를 숨김
     setSty(false);
   };
@@ -39,17 +41,18 @@ const LocationScreen = () => {
   };
 
   const startButtons = () => {
+    // 다음 화면으로 넘아가기
     navigation.navigate('Number');
   };
 
   const localButton = () => {
-    console.log('true');
+    console.log('위치 클릭 완료');
     setConsent(true);
   };
 
   const refreshLocation = async () => {
     try {
-      console.log("restart");
+      console.log("현재 위치 찾는 중");
       const location = await Location.getCurrentPositionAsync({});
       setLocation(location); // 경도 위도
 
@@ -57,15 +60,14 @@ const LocationScreen = () => {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-      console.log(locationInfo);
 
       if (locationInfo && locationInfo.length > 0) {
         const firstLocation = locationInfo[0];
-        // console.log(firstLocation);
         const region = firstLocation.region || '수도 정보 없음';
         const city = firstLocation.city || '도시 정보 없음'
         const district = firstLocation.district || "동네 정보 없음";
         const info = region + ' ' + city + ' ' + district;
+        console.log(info);
         setLocationName(info);
 
         // 로컬 DB에 위치 정보 업데이트

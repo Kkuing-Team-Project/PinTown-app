@@ -35,7 +35,7 @@ function HomeTabs() {
       </Tab.Screen>
 
     <Tab.Screen
-        name="Profile"
+        name="Profile_Login"
         options={{ headerShown: false }}
       >
         {() => <ProfileScreen />}
