@@ -1,6 +1,6 @@
 // COOLSMS API + SCERET
 const coolsms = require("coolsms-node-sdk").default;
-const messageService = new coolsms("NCSL3V8WN7PQFTEG", "0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U"); // coolsms API, SECRET
+const messageService = new coolsms("API", "SECRET"); // coolsms API, SECRET
 
 const connectToMongoDB = require('./db_connect');
 const mongoose = require('mongoose');
