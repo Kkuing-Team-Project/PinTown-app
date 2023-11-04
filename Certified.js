@@ -58,6 +58,7 @@ const CertifiedScreen = () => {
                 <IconButton icon="arrow-left" iconColor={MD3Colors.error50} size={20} onPress={leftButtton}/>
             </View>
             <TextInput
+                // 전화번호 입력 코드
                 style={styles2.input}
                 placeholder="휴대폰 번호(- 없이 숫자만 입력)"
                 value={username}
