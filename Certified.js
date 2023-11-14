@@ -1,13 +1,12 @@
 // Certified.js
 
-import React, { useState, } from 'react';
+import React, { useState,} from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import { Searchbar, IconButton, MD3Colors } from 'react-native-paper';
-//import send from './Yong_server/routes/send_sms';
+// import sendSMSAndSaveToDB from './Yong_server/routes/send_sms';
 
-//NCSL3V8WN7PQFTEG
-// 0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U
+
 const CertifiedScreen = () => {
   const navigation = useNavigation(); // Get the navigation object
   const [phoneNumber, setUsername] = React.useState('');
@@ -21,19 +20,20 @@ const CertifiedScreen = () => {
   };
 
   const ClikButton = () => {
-    console.log({phoneNumber});
+    console.log(phoneNumber);
     setClik(false);
   };
 
   const NumberButton = () => {
-    const getNumber = "01025143059"; // 테스트 용 번호 | phoneNumber 변수 입력 예정
-
+    // const getNumber = `${phoneNumber}`; // 테스트 용 번호 | phoneNumber 변수 입력 예정
+    const getNumber = "01062878958";
     if (getNumber) {
         const data = {
             getNumber: getNumber
         };
+        console.log('Request Payload:', JSON.stringify(data));
 
-        fetch('/sms', {
+        fetch('http://192.9.125.212:8081/sms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +47,6 @@ const CertifiedScreen = () => {
         .catch((error) => {
             console.error('Error:', error);
         });
-
         console.log('인증번호 발송');
     } else {
         console.error('전화번호가 입력되지 않았습니다.');

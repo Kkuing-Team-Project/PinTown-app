@@ -1,9 +1,13 @@
 // COOLSMS API + SCERET
 const coolsms = require("coolsms-node-sdk").default;
-const messageService = new coolsms("API", "SECRET"); // coolsms API, SECRET
+const messageService = new coolsms("NCSL3V8WN7PQFTEG", "0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U"); // coolsms API, SECRET
 
 const connectToMongoDB = require('./db_connect');
 const mongoose = require('mongoose');
+
+const express = require('express');
+const app = express();
+
 
 const Schema = mongoose.Schema;
 const logSchema = new Schema({ 
@@ -97,14 +101,28 @@ async function sendSMSAndSaveToDB(getNumber) {
     }
 }
 
-// POST 요청 처리
-app.post('/sms', (req, res) => {
-    const getNumber = req.body.phoneNumber;
+const PORT = 8081; // 변경된 포트
+const HOST = '192.9.125.212'; // 변경된 호스트
 
-    if (getNumber) {
-        sendSMSAndSaveToDB(getNumber);
-        res.status(200).send('SMS 전송 및 데이터베이스 저장이 시작되었습니다.');
+app.listen(PORT, HOST, () => {
+    console.log(`서버가 ${HOST}:${PORT}에서 실행 중입니다.`);
+});
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+
+// POST 요청 처리
+
+
+app.post('/sms', (req, res) => {
+    const getNumber = req.body;
+    const phoneNumber = getNumber.getNumber.match(/\d+/)[0];
+
+    if (phoneNumber) {
+        sendSMSAndSaveToDB(phoneNumber);
+        res.status(200).json({ message: 'SMS 전송 및 데이터베이스 저장이 시작되었습니다.' });
     } else {
-        res.status(400).send('전화번호가 제공되지 않았습니다.');
+        res.status(400).json({ error: '전화번호가 제공되지 않았습니다.' });
     }
 });
+// sendSMSAndSaveToDB(tttt)
