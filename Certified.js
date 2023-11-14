@@ -4,12 +4,16 @@ import React, { useState, } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import { Searchbar, IconButton, MD3Colors } from 'react-native-paper';
+import sendSMSAndSaveToDB from './send_sms';
 
+//NCSL3V8WN7PQFTEG
+// 0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U
 const CertifiedScreen = () => {
   const navigation = useNavigation(); // Get the navigation object
-  const [username, setUsername] = React.useState('');
+  const [phoneNumber, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [clik, setClik] = useState(true)
+  const [clik, setClik] = useState(true);
+
 
   const leftButtton = () => {
     navigation.navigate('Location');
@@ -17,12 +21,37 @@ const CertifiedScreen = () => {
   };
 
   const ClikButton = () => {
+    console.log({phoneNumber});
     setClik(false);
   };
 
   const NumberButton = () => {
-    // 전화번호 인증 시스템
-    console.log('인증번호 발송');
+    const getNumber = "01025143059"; // 테스트 용 번호 | phoneNumber 변수 입력 예정
+
+    if (getNumber) {
+        const data = {
+            getNumber: getNumber
+        };
+
+        fetch('/sms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+        console.log('인증번호 발송');
+    } else {
+        console.error('전화번호가 입력되지 않았습니다.');
+    }
   };
 
   const CertifiedButton = () => {
@@ -41,7 +70,7 @@ const CertifiedScreen = () => {
             <TextInput
                 style={styles.input}
                 placeholder="휴대폰 번호(- 없이 숫자만 입력)"
-                value={username}
+                value={phoneNumber}
                 onChangeText={(text) => setUsername(text)}
             />
     
@@ -61,7 +90,7 @@ const CertifiedScreen = () => {
                 // 전화번호 입력 코드
                 style={styles2.input}
                 placeholder="휴대폰 번호(- 없이 숫자만 입력)"
-                value={username}
+                value={phoneNumber}
                 onChangeText={(text) => setUsername(text)}
             />
     

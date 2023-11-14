@@ -40,9 +40,7 @@ const ProfileScreen = () => {
       return null; // 이미지 업로드 취소한 경우
     }
   
-    // 이미지 업로드 결과 및 이미지 경로 업데이트
-    //console.log(result);
-    setImageUrl(result.uri);
+    setImageUrl(result.uri); // 이미지 업로드 결과 및 이미지 경로 업데이트
   
     // 서버에 요청 보내기
     const localUri = result.uri;
