@@ -4,7 +4,7 @@ import React, { useState, } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import { Searchbar, IconButton, MD3Colors } from 'react-native-paper';
-import sendSMSAndSaveToDB from './send_sms';
+//import send from './Yong_server/routes/send_sms';
 
 //NCSL3V8WN7PQFTEG
 // 0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U
