@@ -1,11 +1,12 @@
 // location.js
 
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Ch} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Searchbar, IconButton, MD3Colors } from 'react-native-paper';
 import * as Location from "expo-location";
 import * as SQLite from "expo-sqlite";
+import { CheckBox } from 'react-native-elements'
 
 const LocationScreen = () => {
   const navigation = useNavigation();
@@ -49,6 +50,10 @@ const LocationScreen = () => {
     console.log('위치 클릭 완료');
     setConsent(true);
   };
+
+  const check = () => {
+    console.log('1단계 완료');
+  }
 
   const refreshLocation = async () => {
     try {
@@ -107,6 +112,13 @@ const LocationScreen = () => {
         <Text style={styles.localtext}>{locationName ? `${locationName}` : ""}</Text>
         <ScrollView contentContainerStyle={styles.container2}>
           <View style={styles.bottomUIContainer2}>
+            <CheckBox
+                center
+                title='모두 동의'
+                checkedIcon='dot-circle-o'
+                uncheckedIcon='circle-o'
+                onPress={check}
+              />
             <Text style={styles.Text_title}>동의</Text>
             <TouchableOpacity style={styles.findnButton_2} onPress={startButtons}>
               <Text style={styles.findnButtonText_2}>시작하기</Text>
@@ -219,7 +231,7 @@ const styles = StyleSheet.create({
     position: 'absolute', // 절대 위치 설정
     bottom: 0, // 아이폰 하단에 고정
     width: '100%', // 가로 전체 너비
-    height: '70%',
+    height: '75%',
     alignItems: 'center',
     backgroundColor: '#FFFFFF', // 배경색 설정
     borderRadius: 30,
