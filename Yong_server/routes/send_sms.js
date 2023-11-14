@@ -27,20 +27,57 @@ console.log(num);
 
 
 // SMS 발송 코드
-messageService.sendOne({
-  to: "01025143059", // 메세지 받는 번호 | 추후 "phoneNumber"로 변경(변수로 사용자 번호 입력)
-  from: "01025143059", // 메세지 전송하는 번호 | 일단 이 번호 고정임
-  text: `안녕하세요.\n인증번호는[${num}]입니다.\n3분 안에 입력하세요.`
-}).then(res => console.log(res));
+// messageService.sendOne({
+//   to: `${phoneNumber}`, // 메세지 받는 번호 | 추후 "phoneNumber"로 변경(변수로 사용자 번호 입력)
+//   from: "01025143059", // 메세지 전송하는 번호 | 일단 이 번호 고정임
+//   text: `안녕하세요.\n인증번호는[${num}]입니다.\n3분 안에 입력하세요.`
+// }).then(res => console.log(res));
 
 
-// 전화번호 + 인증 번호 저장 -> 인증용 저장, 3분 후 삭제
-async function saveToDB() {
+// // 전화번호 + 인증 번호 저장 -> 인증용 저장, 3분 후 삭제
+// async function saveToDB() {
+//     try {
+//         await connectToMongoDB();
+//         const newData = new log({
+//             num: num,
+//             phoneNumber: "01025143059" // 테스트용으로 임시로 입력 | 추후 phoneNumber 변수로 변경하여 저장
+//         });
+
+//         const savedData = await newData.save();
+//         console.log('데이터가 성공적으로 저장되었습니다:', savedData);
+
+//         // 3분 후 데이터 삭제
+//         setTimeout(async () => {
+//             try {
+//                 await log.deleteOne({ _id: savedData._id });
+//                 console.log('데이터가 성공적으로 삭제되었습니다.');
+//             } catch (error) {
+//                 console.error('데이터 삭제 오류:', error);
+//             }
+//         }, 180000);
+//     } catch (error) {
+//         console.error('데이터 저장 오류:', error);
+//     }
+// }
+
+// saveToDB();
+
+async function sendSMSAndSaveToDB(getNumber) {
+    const num = generateRandomNumber();
+
     try {
+        // SMS 발송
+        await messageService.sendOne({
+            to: `${getNumber}`,
+            from: "01025143059",
+            text: `안녕하세요.\n인증번호는[${num}]입니다.\n3분 안에 입력하세요.`
+        });
+
+        // 데이터베이스 저장
         await connectToMongoDB();
         const newData = new log({
             num: num,
-            phoneNumber: "01025143059" // 테스트용으로 임시로 입력 | 추후 phoneNumber 변수로 변경하여 저장
+            getNumber: getNumber
         });
 
         const savedData = await newData.save();
@@ -56,8 +93,18 @@ async function saveToDB() {
             }
         }, 180000);
     } catch (error) {
-        console.error('데이터 저장 오류:', error);
+        console.error('SMS 발송 및 데이터 저장 오류:', error);
     }
 }
 
-saveToDB();
+// POST 요청 처리
+app.post('/sms', (req, res) => {
+    const getNumber = req.body.phoneNumber;
+
+    if (getNumber) {
+        sendSMSAndSaveToDB(getNumber);
+        res.status(200).send('SMS 전송 및 데이터베이스 저장이 시작되었습니다.');
+    } else {
+        res.status(400).send('전화번호가 제공되지 않았습니다.');
+    }
+});
