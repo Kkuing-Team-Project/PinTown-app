@@ -79,13 +79,9 @@ async function sendSMSAndSaveToDB(getNumber) {
 
         // 데이터베이스 저장
         await connectToMongoDB();
-        const newData = new log({
-            num: num,
-            getNumber: `${getNumber}`
-        });
-
-        const savedData = await newData.save();
-        console.log('데이터가 성공적으로 저장되었습니다:', savedData);
+        const newData = new log({num, getNumber});
+        await newData.save();
+        console.log('데이터가 성공적으로 저장되었습니다:', newData);
 
         // 3분 후 데이터 삭제
         setTimeout(async () => {
