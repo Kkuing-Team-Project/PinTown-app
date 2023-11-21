@@ -126,4 +126,35 @@ app.post('/sms', (req, res) => {
         res.status(400).json({ error: '전화번호가 제공되지 않았습니다.' });
     }
 });
+
+app.post('/auth', async (req, res) => {
+    const { password, phoneNumber } = req.body;
+
+    try {
+        // 비밀번호(요청 받은 비밀번호)와 num(데이터베이스에서 가져온 비밀번호) 비교
+        const foundUserByPassword = await log.findOne({ 'num': password });
+
+        if (!foundUserByPassword) {
+            console.log('비밀번호가 일치하지 않음');
+            return res.status(401).json({ message: '로그인 실패 - 비밀번호 불일치' });
+        }
+
+        // getNumber(요청 받은 전화번호)와 phoneNumber(데이터베이스에서 가져온 전화번호) 비교
+        const foundUserByPhoneNumber = await log.findOne({ 'phoneNumber': phoneNumber });
+
+        if (!foundUserByPhoneNumber) {
+            console.log('전화번호가 일치하지 않음');
+            return res.status(401).json({ message: '로그인 실패 - 전화번호 불일치' });
+        }
+
+        // 비밀번호와 전화번호가 모두 일치하면 로그인 성공 출력
+        console.log('로그인 성공'); // 이거 뜨면 일단 성공
+        res.status(200).json({ message: '로그인 성공' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: '서버 오류' });
+    }
+});
+
 // sendSMSAndSaveToDB(tttt)

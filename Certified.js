@@ -25,8 +25,8 @@ const CertifiedScreen = () => {
   };
 
   const NumberButton = () => {
-    const getNumber = `${phoneNumber}`; // 테스트 용 번호 | phoneNumber 변수 입력 예정
-    // const getNumber = "01062878958";
+    // const getNumber = `${phoneNumber}`; // 테스트 용 번호 | phoneNumber 변수 입력 예정
+    const getNumber = `${phoneNumber}`;
     if (getNumber) {
         const data = {
             getNumber: getNumber
@@ -55,6 +55,31 @@ const CertifiedScreen = () => {
 
   const CertifiedButton = () => {
     navigation.navigate('Profile');
+    if (password) {
+        const data = {
+            password: password,
+            getNumber: getNumber,
+        };
+        console.log('Request Payload:', JSON.stringify(data));
+
+        fetch('http://172.17.52.191:8081/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+        console.log('인증번호 발송');
+    } else {
+        console.error('전화번호가 입력되지 않았습니다.');
+    }
   };
 
   if (clik == true){
