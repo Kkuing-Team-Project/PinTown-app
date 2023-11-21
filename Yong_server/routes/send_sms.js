@@ -81,7 +81,7 @@ async function sendSMSAndSaveToDB(getNumber) {
         await connectToMongoDB();
         const newData = new log({
             num: num,
-            getNumber: getNumber
+            getNumber: `${getNumber}`
         });
 
         const savedData = await newData.save();
