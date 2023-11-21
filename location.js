@@ -20,6 +20,9 @@ const LocationScreen = () => {
   const [location, setLocation] = useState(null);
   const [locationName, setLocationName] = useState(null);
 
+  const [local, localName] = useState(null);
+
+
   const db = SQLite.openDatabase("locations.db");
 
   const Certified = () => {
@@ -47,7 +50,9 @@ const LocationScreen = () => {
   };
 
   const localButton = () => {
-    console.log('위치 클릭 완료');
+    console.log(`${local} 위치 클릭 완료`);
+
+    // server에 해당 클릭한 해당 위치 data 전송.
     setConsent(true);
   };
 
@@ -74,6 +79,7 @@ const LocationScreen = () => {
         const info = region + ' ' + city + ' ' + district;
         console.log(info);
         setLocationName(info);
+        localName(info);
 
         // 로컬 DB에 위치 정보 업데이트
         db.transaction((tx) => {
