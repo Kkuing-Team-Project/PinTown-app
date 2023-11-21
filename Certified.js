@@ -19,22 +19,6 @@ const CertifiedScreen = () => {
     console.log('ok');
   };
 
-  const isValidPhoneNumber = (data) => {
-    // 정규표현식을 사용하여 유효한 휴대폰 번호 형식을 확인합니다
-    const phoneNumberRegex = /^(010)?(\d{4})?(\d{4})$/;
-    console.log(phoneNumberRegex);
-    console.log(data);
-    return phoneNumberRegex.test(data);
-  };
-
-  const handlePhoneNumberChange = () => {
-    console.log('검증시작');
-    // 입력된 번호가 유효한 경우에만 상태를 업데이트합니다
-    if (isValidPhoneNumber(phoneNumber)) {
-      setPhoneNumber(phoneNumber);
-    }
-  };
-
   const ClikButton = () => {
     console.log(phoneNumber);
     setClik(false);
@@ -49,7 +33,7 @@ const CertifiedScreen = () => {
         };
         console.log('Request Payload:', JSON.stringify(data));
 
-        fetch('http://192.9.125.212:8081/sms', {
+        fetch('http://172.17.52.191:8081/sms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -27,7 +27,7 @@ function generateRandomNumber() {
     return result;
 }
 const num = generateRandomNumber();
-console.log(num);
+// console.log(num);
 
 
 // SMS 발송 코드
@@ -79,9 +79,11 @@ async function sendSMSAndSaveToDB(getNumber) {
 
         // 데이터베이스 저장
         await connectToMongoDB();
-        const newData = new log({num, getNumber});
-        await newData.save();
-        console.log('데이터가 성공적으로 저장되었습니다:', newData);
+        const newData = new log({num, getNumber: `${getNumber}`});
+        console.log('확인 - userID 값:', getNumber);
+
+        const savedData = await newData.save();
+        console.log('데이터가 성공적으로 저장되었습니다:', savedData);
 
         // 3분 후 데이터 삭제
         setTimeout(async () => {
@@ -98,7 +100,7 @@ async function sendSMSAndSaveToDB(getNumber) {
 }
 
 const PORT = 8081; // 변경된 포트
-const HOST = '192.9.125.212'; // 변경된 호스트
+const HOST = '172.17.52.191'; // 변경된 호스트
 
 app.listen(PORT, HOST, () => {
     console.log(`서버가 ${HOST}:${PORT}에서 실행 중입니다.`);
