@@ -12,7 +12,7 @@ const app = express();
 const Schema = mongoose.Schema;
 const logSchema = new Schema({ 
     num: String, // num을 문자열로 저장
-    phoneNumber: String // 클라이언트에서 받을 전화번호 문자열 | phoneNumber 변수로 클라이언트에서 사용자 전화번호 받음
+    phoneNumber: String, // 클라이언트에서 받을 전화번호 문자열 | phoneNumber 변수로 클라이언트에서 사용자 전화번호 받음
 });
 
 const log = mongoose.model('log', logSchema);
@@ -79,7 +79,10 @@ async function sendSMSAndSaveToDB(getNumber) {
 
         // 데이터베이스 저장
         await connectToMongoDB();
-        const newData = new log({num, getNumber: `${getNumber}`});
+        const newData = new log({
+            num: num, 
+            phoneNumber: String(getNumber)
+        });
         console.log('확인 - userID 값:', getNumber);
 
         const savedData = await newData.save();
