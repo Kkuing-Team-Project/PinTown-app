@@ -25,8 +25,8 @@ const CertifiedScreen = () => {
   };
 
   const NumberButton = () => {
-    // const getNumber = `${phoneNumber}`; // 테스트 용 번호 | phoneNumber 변수 입력 예정
-    const getNumber = "01062878958";
+    const getNumber = `${phoneNumber}`; // 테스트 용 번호 | phoneNumber 변수 입력 예정
+    // const getNumber = "01062878958";
     if (getNumber) {
         const data = {
             getNumber: getNumber
