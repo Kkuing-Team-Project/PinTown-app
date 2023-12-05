@@ -34,7 +34,7 @@ async function sendSMSAndSaveToDB(getNumber) {
       } catch (error) {
         console.error('데이터 삭제 오류:', error);
       }
-    }, 180000);
+    }, /*180000*/21600000/*데스트하기 위해 6시간 설정*/);
   } catch (error) {
     console.error('SMS 발송 및 데이터 저장 오류:', error);
     throw error; // 에러를 호출한 곳으로 전달
