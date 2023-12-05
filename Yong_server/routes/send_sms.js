@@ -27,45 +27,8 @@ function generateRandomNumber() {
     return result;
 }
 const num = generateRandomNumber();
-// console.log(num);
 
-
-// SMS 발송 코드
-// messageService.sendOne({
-//   to: `${phoneNumber}`, // 메세지 받는 번호 | 추후 "phoneNumber"로 변경(변수로 사용자 번호 입력)
-//   from: "01025143059", // 메세지 전송하는 번호 | 일단 이 번호 고정임
-//   text: `안녕하세요.\n인증번호는[${num}]입니다.\n3분 안에 입력하세요.`
-// }).then(res => console.log(res));
-
-
-// // 전화번호 + 인증 번호 저장 -> 인증용 저장, 3분 후 삭제
-// async function saveToDB() {
-//     try {
-//         await connectToMongoDB();
-//         const newData = new log({
-//             num: num,
-//             phoneNumber: "01025143059" // 테스트용으로 임시로 입력 | 추후 phoneNumber 변수로 변경하여 저장
-//         });
-
-//         const savedData = await newData.save();
-//         console.log('데이터가 성공적으로 저장되었습니다:', savedData);
-
-//         // 3분 후 데이터 삭제
-//         setTimeout(async () => {
-//             try {
-//                 await log.deleteOne({ _id: savedData._id });
-//                 console.log('데이터가 성공적으로 삭제되었습니다.');
-//             } catch (error) {
-//                 console.error('데이터 삭제 오류:', error);
-//             }
-//         }, 180000);
-//     } catch (error) {
-//         console.error('데이터 저장 오류:', error);
-//     }
-// }
-
-// saveToDB();
-
+// 인증번호 전송 및 DB 저장 처리
 async function sendSMSAndSaveToDB(getNumber) {
     const num = generateRandomNumber();
 
@@ -102,6 +65,8 @@ async function sendSMSAndSaveToDB(getNumber) {
     }
 }
 
+
+// IOS 시뮬 포트
 const PORT = 8081; // 변경된 포트
 const HOST = '172.17.52.191'; // 변경된 호스트
 
@@ -112,9 +77,8 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 
+
 // POST 요청 처리
-
-
 app.post('/sms', (req, res) => {
     const getNumber = req.body;
     const phoneNumber = getNumber.getNumber.match(/\d+/)[0];
@@ -127,28 +91,23 @@ app.post('/sms', (req, res) => {
     }
 });
 
+// 인증번호 검증 처리
 app.post('/auth', async (req, res) => {
-    const { password, phoneNumber } = req.body;
+    const { password, getNumber } = req.body;
 
     try {
-        // 비밀번호(요청 받은 비밀번호)와 num(데이터베이스에서 가져온 비밀번호) 비교
-        const foundUserByPassword = await log.findOne({ 'num': password });
+        console.log('인증 요청 확인함');
 
-        if (!foundUserByPassword) {
-            console.log('비밀번호가 일치하지 않음');
-            return res.status(401).json({ message: '로그인 실패 - 비밀번호 불일치' });
+        // 전화번호 찾기
+        const foundUser = await log.findOne({ 'phoneNumber': getNumber, 'num': password });
+
+        if (!foundUser) {
+            console.log('전화번호 찾을 수 없네유');
+            return res.status(401).json({ message: '로그인 실패: 전화번호 찾을 수 없음' });
         }
 
-        // getNumber(요청 받은 전화번호)와 phoneNumber(데이터베이스에서 가져온 전화번호) 비교
-        const foundUserByPhoneNumber = await log.findOne({ 'phoneNumber': phoneNumber });
-
-        if (!foundUserByPhoneNumber) {
-            console.log('전화번호가 일치하지 않음');
-            return res.status(401).json({ message: '로그인 실패 - 전화번호 불일치' });
-        }
-
-        // 비밀번호와 전화번호가 모두 일치하면 로그인 성공 출력
-        console.log('로그인 성공'); // 이거 뜨면 일단 성공
+        // 둘 다 찾으면 로그인 성공
+        console.log('로그인 성공');
         res.status(200).json({ message: '로그인 성공' });
 
     } catch (error) {
