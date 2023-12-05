@@ -20,7 +20,7 @@ const CertifiedScreen = () => {
   };
 
   const ClikButton = () => {
-    console.log(phoneNumber);
+    console.log(phoneNumber, 'test');
     setClik(false);
   };
 
@@ -31,9 +31,9 @@ const CertifiedScreen = () => {
         const data = {
             getNumber: getNumber
         };
-        console.log('Request Payload:', JSON.stringify(data));
+        console.log('Request Payload_ phone:', JSON.stringify(data));
 
-        fetch('http://172.17.52.191:8081/sms', {
+        fetch('http://172.17.49.176:8081/sms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,24 +54,35 @@ const CertifiedScreen = () => {
   };
 
   const CertifiedButton = () => {
-    navigation.navigate('Profile');
+    const getNumber =  `${phoneNumber}`;
+
     if (password) {
         const data = {
             password: password,
             getNumber: getNumber,
         };
-        console.log('Request Payload:', JSON.stringify(data));
+        console.log('Request Payload 이용욱:', JSON.stringify(data));
 
-        fetch('http://172.17.52.191:8081/auth', {
+        fetch('http://172.17.49.176:8081/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
         })
+
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            if (data.check) {
+                // Authentication successful
+                console.log('Authentication successful');
+                navigation.navigate('Profile');
+            } else {
+                // Authentication failed
+                console.log('Authentication failed');
+                // Handle authentication failure, e.g., show an error message
+            }
         })
         .catch((error) => {
             console.error('Error:', error);

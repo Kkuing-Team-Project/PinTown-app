@@ -75,6 +75,7 @@ const ProfileScreen = () => {
     }    
   };
   
+  // start 버튼
   const ClikButton = () => {
     navigation.navigate('Main');
   };

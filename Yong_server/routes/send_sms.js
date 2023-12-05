@@ -59,7 +59,7 @@ async function sendSMSAndSaveToDB(getNumber) {
             } catch (error) {
                 console.error('데이터 삭제 오류:', error);
             }
-        }, 180000);
+        }, /*180000*/21600000/*데스트하기 위해 6시간 설정*/);
     } catch (error) {
         console.error('SMS 발송 및 데이터 저장 오류:', error);
     }
@@ -68,7 +68,7 @@ async function sendSMSAndSaveToDB(getNumber) {
 
 // IOS 시뮬 포트
 const PORT = 8081; // 변경된 포트
-const HOST = '172.17.52.191'; // 변경된 호스트
+const HOST = '172.17.49.176'; // 변경된 호스트
 
 app.listen(PORT, HOST, () => {
     console.log(`서버가 ${HOST}:${PORT}에서 실행 중입니다.`);
@@ -91,9 +91,9 @@ app.post('/sms', (req, res) => {
     }
 });
 
-// 인증번호 검증 처리
 app.post('/auth', async (req, res) => {
     const { password, getNumber } = req.body;
+    let check = false;
 
     try {
         console.log('인증 요청 확인함');
@@ -102,18 +102,18 @@ app.post('/auth', async (req, res) => {
         const foundUser = await log.findOne({ 'phoneNumber': getNumber, 'num': password });
 
         if (!foundUser) {
-            console.log('전화번호 찾을 수 없네유');
-            return res.status(401).json({ message: '로그인 실패: 전화번호 찾을 수 없음' });
+            console.log('인증번호 틀림 병신아 너 김도현이야??');
+            return res.status(401).json({ message: '로그인 실패: 전화번호 찾을 수 없음', check: false });
+        } else {
+            check = true;
         }
 
         // 둘 다 찾으면 로그인 성공
         console.log('로그인 성공');
-        res.status(200).json({ message: '로그인 성공' });
+        res.status(200).json({ message: '로그인 성공', check: check });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: '서버 오류' });
+        res.status(500).json({ message:  '인증번호 오류', check: false });
     }
 });
-
-// sendSMSAndSaveToDB(tttt)

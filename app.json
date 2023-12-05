@@ -6,12 +6,11 @@
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    // "icon": "./assets/pintown_1qwer.mp4",
-    "icon": "./assets/log/Main.png",
+    "icon": "./assets/log/log.png",
     "userInterfaceStyle": "light",
+    
     "splash": {
-      // "image": "./assets/log/Main.png",
-      "image": "./Image/user_UI.png",
+      "image": "./assets/PINTOWN.gif",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
