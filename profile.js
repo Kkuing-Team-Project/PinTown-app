@@ -49,6 +49,8 @@ const ProfileScreen = () => {
     const type = match ? `image/${match[1]}` : `image`;
     const formData = new FormData();
     formData.append('image', { uri: localUri, name: filename, type });
+
+    const phoneNumber = require('./Certified.js'); // 81번 줄
   
     try {
       const response = await axios({
@@ -75,10 +77,37 @@ const ProfileScreen = () => {
     }    
   };
   
-  // start 버튼
+
+  // start 버튼 | 53번 줄
   const ClikButton = () => {
     navigation.navigate('Main');
-  };
+    const getNumber = phoneNumber;
+    if (username) {
+      const data = {
+        username: username,
+        getNumber: getNumber
+      };
+      console.log('Request Payload_ phone:', JSON.stringify(data));
+
+      fetch('http://172.17.49.176:8081/username', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log('Success:', data);
+      })
+      .catch((error) => {
+          console.error('Error:', error);
+      });
+      console.log('인증번호 발송');
+  } else {
+      console.error('전화번호가 입력되지 않았습니다.');
+  }
+};
 
   return (
     <View style={styles.container}>
