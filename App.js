@@ -1,8 +1,10 @@
 // App.js
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet,SafeAreaView, useColorScheme, } from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import SplashScreen from 'react-native-splash-screen';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

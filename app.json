@@ -6,10 +6,12 @@
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    // "icon": "./assets/pintown_1qwer.mp4",
+    "icon": "./assets/log/Main.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      // "image": "./assets/log/Main.png",
+      "image": "./Image/user_UI.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -38,6 +40,19 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "sentry",
+            "project": "pintown-c-app",
+            "authToken": "your-auth-token"
+          }
+        }
+      ]
     }
   }
 }
