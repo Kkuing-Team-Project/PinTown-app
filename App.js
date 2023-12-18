@@ -9,14 +9,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import MapScreen from "./Map2";
+import MapScreen from "./src/Map2";
 //mport LoginScreen from "./Login";
 //import SignupScreen from "./SignUp";
-import ProfileScreen from "./profile";
-import Tutorial from "./tutorial";
-import Location from "./location";
-import CertifiedScreen from './Certified';
-
+import ProfileScreen from "./src/profile";
+import Tutorial from "./src/tutorial";
+import Location from "./src/location";
+import CertifiedScreen from './src/Certified';
+import Write from './src/ArticleWrite'
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -52,9 +52,10 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Tutorial" component={Tutorial} options={{headerShown: false}}/>
         <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
-        <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />        
+        {/* <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />     */}
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
+        <Stack.Screen name='Write' component={Write} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

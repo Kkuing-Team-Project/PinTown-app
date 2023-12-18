@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Circle, Marker } from "react-native-maps";
+import { useNavigation } from "@react-navigation/native";
+
 import * as Location from "expo-location";
 import * as SQLite from "expo-sqlite";
 
@@ -8,8 +10,10 @@ const MapScreen = () => {
     const [location, setLocation] = useState(null);
     const [locationName, setLocationName] = useState(null);
     const mapRef = useRef(null);
+    const navigation = useNavigation();
 
     const db = SQLite.openDatabase("locations.db");
+
 
     useEffect(() => {
         (async () => {
@@ -71,6 +75,11 @@ const MapScreen = () => {
             moveCamera(location.coords.latitude, location.coords.longitude);
         }
     };
+
+    const navigateToBulletinBoard = () => {
+        navigation.navigate("Write"); // Replace "BulletinBoard" with the actual name of your bulletin board screen
+    };
+
 
     const moveCamera = (latitude, longitude) => {
         if (mapRef.current) {
@@ -145,10 +154,10 @@ const MapScreen = () => {
                             longitude: location.coords.longitude,
                         }}
                     >
-                        <Image
+                        {/* <Image
                             source={require("./Image/user_UI.png")}
                             style={{ width: 40, height: 40, borderRadius: 20 }}
-                        />
+                        /> */}
                     </Marker>
                 </MapView>
             ) : (
@@ -165,6 +174,14 @@ const MapScreen = () => {
             >
                 <Text style={styles.gpsButtonText}>GPS</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.bulletinBoardButton}
+                onPress={navigateToBulletinBoard}
+            >
+                <Text style={styles.bulletinBoardButtonText}>Bulletin Board</Text>
+            </TouchableOpacity>
+
         </View>
     );
 };
@@ -204,6 +221,19 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 5,
         zIndex: 2,
+    },
+
+    bulletinBoardButton: {
+        position: "absolute",
+        bottom: 16,
+        left: 16,
+        backgroundColor: "orange",
+        padding: 10,
+        borderRadius: 5,
+    },
+    bulletinBoardButtonText: {
+        color: "white",
+        fontWeight: "bold",
     },
 });
 

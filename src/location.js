@@ -46,7 +46,8 @@ const LocationScreen = () => {
 
   const startButtons = () => {
     // 다음 화면으로 넘아가기
-    navigation.navigate('Number');
+    //navigation.navigate('Number');
+    navigation.navigate('Profile');
   };
 
   const localButton = () => {
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
 
   findnButtonText_2: {
-    color: 'white',
+    color: 'black',
     fontSize: 30,
     textAlign: 'center',
   },
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
   },
 
   findnButtonText2: {
-    color: 'white',
+    color: 'black',
     fontSize: 20,
     textAlign: 'center',
   },

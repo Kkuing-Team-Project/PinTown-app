@@ -46,6 +46,7 @@
     "react-native-sms": "^1.11.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-native-svg": "13.9.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.0.1"
   },
