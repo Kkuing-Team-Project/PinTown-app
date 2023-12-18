@@ -8,28 +8,23 @@ app.use(express.json());
 // 게시물 스케마
 const postSchema = new mongoose.Schema({
     title: String,
-    body: String,
-    author: String,
-    createdAt: { type: mongoose.Schema.Types.ObjectId, default: mongoose.Types.ObjectId },
-    location: String,
+    content: String
 });
 
 // 게시물 모델
 const Post = mongoose.model('Post', postSchema);
 
 // 게시물 저장 POST 요청 처리
-app.post('/post', async (req, res) => {
-    const { title, body, author, location } = req.body; // location : 게시물 작성 위치 (클라이언트에서 전송)
+app.post('/articles', async (req, res) => {
+    const { title, content } = req.body; // location : 게시물 작성 위치 (클라이언트에서 전송)
 
     try {
         console.log('게시물 저장 요청 확인함');
 
         // 게시물 생성
         const newPost = new Post({
-            title: title, // 제목
-            body: body, // 본문
-            writer: author, // 작성자 아이디
-            location: location, // 게시물 작성 위치
+            title: title,
+            content: content
         });
 
         // 데이터베이스에 저장
@@ -43,5 +38,3 @@ app.post('/post', async (req, res) => {
         res.status(500).json({ message: '서버 오류' });
     }
 });
-
-connectToMongoDB();
