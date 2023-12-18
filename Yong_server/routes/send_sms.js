@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 const Schema = mongoose.Schema;
 const logSchema = new Schema({
@@ -17,7 +18,15 @@ const logSchema = new Schema({
   phoneNumber: String, // 클라이언트에서 받을 전화번호 문자열 | phoneNumber 변수로 클라이언트에서 사용자 전화번호 받음
 });
 
+// 게시물 스케마
+const postSchema = new mongoose.Schema({
+  title: String,
+  content: String
+});
+
 const log = mongoose.model("log", logSchema);
+// 게시물 모델
+const Post = mongoose.model('Post', postSchema);
 
 // 랜덤 번호 생성
 function generateRandomNumber() {
@@ -122,5 +131,30 @@ app.post("/auth", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "인증번호 오류", check: false });
+  }
+});
+
+// 게시물 저장 POST 요청 처리
+app.post('/articles', async (req, res) => {
+  const { title, content } = req.body;
+
+  try {
+      console.log('게시물 저장 요청 확인함');
+
+      // 게시물 생성
+      const newPost = new Post({
+          title: title,
+          content: content
+      });
+
+      // 데이터베이스에 저장
+      await newPost.save();
+
+      console.log('게시물 저장 성공');
+      res.status(201).json({ message: '게시물 저장 성공' });
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: '서버 오류' });
   }
 });

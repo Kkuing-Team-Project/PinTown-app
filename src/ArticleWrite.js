@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, TextInput, StyleSheet, SafeAreaView } from "react-native";
+import fetcher from "../lib/Fetcher";
 
 const Write = () => {
   const [content, setContent] = useState("");

@@ -5,6 +5,9 @@ import { IconButton, MD3Colors } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import FormData from 'form-data'
 import axios from 'axios';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const ProfileScreen = () => {
   const navigation = useNavigation(); // Get the navigation object
@@ -40,41 +43,39 @@ const ProfileScreen = () => {
       return null; // 이미지 업로드 취소한 경우
     }
   
-    setImageUrl(result.uri); // 이미지 업로드 결과 및 이미지 경로 업데이트
+    setImageUrl(result.assets[0].uri); // 이미지 업로드 결과 및 이미지 경로 업데이트
   
     // 서버에 요청 보내기
-    const localUri = result.uri;
+    const localUri = result.assets[0].uri;
     const filename = localUri.split('/').pop();
     const match = /\.(\w+)$/.exec(filename ?? '');
     const type = match ? `image/${match[1]}` : `image`;
     const formData = new FormData();
     formData.append('image', { uri: localUri, name: filename, type });
 
-    // const phoneNumber = require('./Certified.js'); // 81번 줄
-  
     try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://192.168.0.89:8081/', // Correct URL
+      const response = await axios.post('http://192.168.0.89:8081/', formData, {
         headers: {
-          'content-type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
-        data: formData,
       });
-    
+  
       // Handle a successful response (e.g., check the status code and response data)
       if (response.status === 200) {
         console.log('Request was successful');
         console.log('Response data:', response.data);
         // You can update your UI or perform further actions based on the response.
+        alert('이미지 업로드 성공');
       } else {
         console.error('Request was not successful. Status code:', response.status);
         // Handle the error (e.g., show an error message to the user)
+        alert('이미지 업로드 실패');
       }
     } catch (error) {
       console.error('Axios request error:', error);
       // Handle the error (e.g., show an error message to the user)
-    }    
+      alert('이미지 업로드 중 오류 발생');
+    }
   };
   
 
