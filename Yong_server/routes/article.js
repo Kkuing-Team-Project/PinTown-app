@@ -16,7 +16,7 @@ const Post = mongoose.model('Post', postSchema);
 
 // 게시물 저장 POST 요청 처리
 app.post('/articles', async (req, res) => {
-    const { title, content } = req.body; // location : 게시물 작성 위치 (클라이언트에서 전송)
+    const { title, content } = req.body;
 
     try {
         console.log('게시물 저장 요청 확인함');
