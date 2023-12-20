@@ -26,7 +26,7 @@ function HomeTabs() {
       <Tab.Screen
         name="Home"
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -36,7 +36,7 @@ function HomeTabs() {
       </Tab.Screen>
 
     <Tab.Screen
-        name="Profile_Login"
+        name="Profile"
         options={{ headerShown: false }}
       >
         {() => <ProfileScreen />}
@@ -52,7 +52,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Tutorial" component={Tutorial} options={{headerShown: false}}/>
         <Stack.Screen name="Location" component={Location} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />     */}
+        <Stack.Screen name="Number" component={CertifiedScreen} options={{ headerShown: false }} />    
         <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={HomeTabs} options={{ headerShown: false }} />
         <Stack.Screen name='Write' component={Write} options={{ headerShown: false }} />

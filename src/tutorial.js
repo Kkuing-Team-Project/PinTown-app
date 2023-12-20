@@ -34,7 +34,7 @@ const Tutorial = () => {
                 height={300}
                 fill={"#000000"}
                 asset={TestSvg}
-            />
+      />
       <Text> </Text>
       <Text> </Text>
       <Text> </Text>

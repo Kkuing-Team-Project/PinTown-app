@@ -132,7 +132,7 @@ const CertifiedScreen = () => {
         <TextInput
           style={styles2.input2}
           placeholder="인증번호 입력"
-          secureTextEntry={true} // 비밀번호 마스킹
+          secureTextEntry={false} // 비밀번호 마스킹
           value={password}
           onChangeText={(text) => setPassword(text)}
         />

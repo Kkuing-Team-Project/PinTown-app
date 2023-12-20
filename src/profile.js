@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
       height: '7%',
       top:-100,
       borderWidth: 1,
-      borderColor: 'gray',
+      borderColor: 'black',
       padding:15,
       marginBottom: 10,
       borderRadius: 10,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   
   signupButtonText: {
-    color: '#FFFFFF',
+    color: 'black',
     fontWeight: 'bold',
     textAlign:'center',
     fontSize:20,

@@ -142,6 +142,7 @@ app.post('/articles', async (req, res) => {
       console.log('게시물 저장 요청 확인함');
 
       // 게시물 생성
+      await connectToMongoDB();
       const newPost = new Post({
           title: title,
           content: content

@@ -179,7 +179,7 @@ const MapScreen = () => {
                 style={styles.bulletinBoardButton}
                 onPress={navigateToBulletinBoard}
             >
-                <Text style={styles.bulletinBoardButtonText}>Bulletin Board</Text>
+                <Text style={styles.bulletinBoardButtonText}>+ 글 작성하기</Text>
             </TouchableOpacity>
 
         </View>
@@ -227,12 +227,12 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 16,
         left: 16,
-        backgroundColor: "orange",
+        backgroundColor: "#60D937",
         padding: 10,
         borderRadius: 5,
     },
     bulletinBoardButtonText: {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
     },
 });
