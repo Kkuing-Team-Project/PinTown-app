@@ -3,7 +3,7 @@ const coolsms = require("coolsms-node-sdk").default;
 const connectToMongoDB = require('./path/to/db_connect');
 const log = require('./path/to/logModel');
 
-const messageService = new coolsms("NCSL3V8WN7PQFTEG", "0H3O0HHELHEDK2D2MFUDEZPZAIIASJ1U");
+const messageService = new coolsms("", "");
 
 async function sendSMSAndSaveToDB(getNumber) {
   const num = generateRandomNumber();
