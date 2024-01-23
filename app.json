@@ -24,7 +24,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.yeopseung.PinTown-C-app",
       "config": {
-        "googleMapsApiKey": "AIzaSyA7tr2yLcJ22AETMq5CovtLZ5RNjyajoM4"
+        "googleMapsApiKey": "yourgooglemapapikeys"
       },
       "infoPlist": {
         "UIBackgroundModes": ["location"]
